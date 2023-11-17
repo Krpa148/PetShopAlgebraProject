@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 
 namespace PetShopAlgebraProject.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -40,7 +40,8 @@ namespace PetShopAlgebraProject.Data
                 new Pet { Id = 12, Name = "Alain", Description = "Uzgojen za prehranu", Price = 2M, Image = "Alain.jpg" },
                 new Pet { Id = 13, Name = "Pero", Description = "Jako veseo i razigran hrčak", Price = 10M, Image = "Pero.jpg" },
                 new Pet { Id = 14, Name = "Charlie", Description = "Draga životinja, osobito djeci, ali voli ugristi", Price = 30M, Image = "Charlie.jpg" },
-                new Pet { Id = 15, Name = "Baltazar", Description = "Samo uz predodžbu potrebnih dozvola", Price = 450M, Image = "Baltazar.jpg" });
+                new Pet { Id = 15, Name = "Baltazar", Description = "Samo uz predodžbu potrebnih dozvola", Price = 450M, Image = "Baltazar.jpg" }
+                );
 
             builder.Entity<Category>().HasData(
                 new Category() { Id = 1, Title = "Mačka" },
@@ -74,12 +75,30 @@ namespace PetShopAlgebraProject.Data
                 new PetCategory() { Id = 15, CategoryId = 11, PetId = 13 }
                 );
 
+            builder.Entity<PetStatus>().HasData(
+                new PetStatus() { Id = 1, PetId = 1, Reserved = false, Sold = false },
+                new PetStatus() { Id = 2, PetId = 2, Reserved = false, Sold = false },
+                new PetStatus() { Id = 3, PetId = 3, Reserved = false, Sold = false },
+                new PetStatus() { Id = 4, PetId = 4, Reserved = false, Sold = false },
+                new PetStatus() { Id = 5, PetId = 5, Reserved = false, Sold = false },
+                new PetStatus() { Id = 6, PetId = 6, Reserved = false, Sold = false },
+                new PetStatus() { Id = 7, PetId = 7, Reserved = false, Sold = false },
+                new PetStatus() { Id = 8, PetId = 8, Reserved = false, Sold = false },
+                new PetStatus() { Id = 9, PetId = 9, Reserved = false, Sold = false },
+                new PetStatus() { Id = 10, PetId = 10, Reserved = false, Sold = false },
+                new PetStatus() { Id = 11, PetId = 11, Reserved = false, Sold = false },
+                new PetStatus() { Id = 12, PetId = 12, Reserved = false, Sold = false },
+                new PetStatus() { Id = 13, PetId = 13, Reserved = false, Sold = false },
+                new PetStatus() { Id = 14, PetId = 14, Reserved = false, Sold = false },
+                new PetStatus() { Id = 15, PetId = 15, Reserved = false, Sold = false }
+                );
+
         }
 
         public DbSet<Pet> Pets { get; set; }
-        public DbSet<PetStatus> Status { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<PetCategory> PetCategory { get; set; }
+        public DbSet<PetStatus> PetStatus { get; set; }
     }
 
     public class ApplicationUser : IdentityUser
@@ -91,21 +110,20 @@ namespace PetShopAlgebraProject.Data
         public string? LastName { get; set; }
 
         [StringLength(200)]
-        public string? Address { get; set; }
+        public string? Adress { get; set; }
 
         [StringLength(200)]
         public string? City { get; set; }
 
-        [StringLength(10)]
+        [StringLength(200)]
         [DataType(DataType.PostalCode)]
         public string? PostalCode { get; set; }
 
         [StringLength(100)]
         public string? Country { get; set; }
 
-
-        [ForeignKey("UserId")]
-        public virtual ICollection<PetStatus> Status { get; set; }
+        [ForeignKey("StatusId")]
+        public virtual ICollection<PetStatus> PetStatus { get; set; }
     }
 
 }
